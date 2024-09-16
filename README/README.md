@@ -30,11 +30,9 @@ type PaymentDetailed{
 }
 ```
 - TypeWithField: is a model that includes field(s) from another model
-<!-- ```ts
-type PaymentWithUser{
-    _id: string;
-    user: UserMini;
-    // ...other fields
+```ts
+type UserWithWallet = User & {
+    wallet: Wallet
 }
-``` -->
+```
 - Paginated<Type>: is response that consist of a list of model paginated

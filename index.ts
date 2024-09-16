@@ -1,4 +1,4 @@
-export { User, UserMini } from './user';
+export { User, UserMini, UserWithWallet, Wallet } from './user';
 export { Admin, AdminAuthResponse } from './admin';
 export { Deposit, DepositDetailed } from './deposit';
 export { Withdrawal, WithdrawalDetailed } from './withdrawal';
