@@ -1,5 +1,8 @@
 export type Wallet = {
+    _id: string;
+    createdAt: string;
     balance: number;
+    user: string;
 }
 
 export type UserWithWallet = User & {

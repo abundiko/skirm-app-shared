@@ -30,9 +30,59 @@ perfix with `/admin`
 - - match: filter skirms by match _id
 - - league: filter skirms by league _id
 - - only: return a particular category of users 'ongoing'|'completed' default is all
-
 - `/:_id`: get single skirm by _id `SkirmDetailed`
 - `/user/:_id`: get skirms by single user by _id `Paginated<SkirmDetailed>`
+
+### `/clubs`
+- `/`:
+- - POST: create a club [name, logo, country, state, primaryColor, homeLeague]. `ClubDetailed`
+- - PATCH: edit a club. [...same formdata for POST ^] `ClubDetailed`
+- - DELETE: delete a club. [clubId] `ClubDetailed`
+- - GET: get all clubs. `Paginated<ClubDetailed>`
+- - - q: search club by name, country, state,
+- - - league: filter clubs by homeLeague
+
+### `/leagues`
+- `/`:
+- - POST: create a League. [title, startDate, endDate, logo] `League`
+- - PATCH: edit a League. [...same formdata for POST ^] `League`
+<!-- - - DELETE: delete a League. `League` -->
+- - GET: get all Leagues. `Paginated<League>`
+- - - q: search League by title,
+- - - only: filter Leagues by 'ongoing', default is all
+
+### `/notions`
+- `/`:
+- - POST: create a Notion. [title, code] `Notion`
+- - PATCH: edit a Notion. [...same formdata for POST ^] `Notion`
+- - DELETE: delete a Notion. [notionId] `Notion`
+- - GET: get all Notions. `Paginated<Notion>`
+- - - q: search Notion by title
+
+### `/matches`
+- `/`:
+- - POST: create a match [homeTeam, awayTeam, startDateTime, endDateTime, league]. `MatchDetailed`
+- - PATCH: edit a match. [...same formdata for POST ^] `MatchDetailed`
+- - DELETE: delete a match. [matchId] `matchDetailed`
+- - GET: get all matchs. `Paginated<matchDetailed>`
+- - - q: search match by homeTeam, awayTeam
+- - - league: filter matches by league
+- - - only: 'ongoing' default is all
+- - - date: filter matches by date `12-09-2024`
+
+### `/deposits`
+- `/`: 
+- - GET: get all deposits history. `Paginated<Deposit>`
+- - - date: filter deposits made in a date `12-09-2024`
+- `/user/:_id`: get deposits by single user by _id `Paginated<Deposit>`
+
+### `/withdrawal`
+- `/`: 
+- - PATCH: approve withdrawal request (after admin has transfered the money). [withdrawalId]. `Withdrawal`
+- - PUT: decline withdrawal request (message: reason for declination). [withdrawalId, message]. `Withdrawal`
+- - GET: get user withdrawal history. `Paginated<Withdrawal>`
+- - - date: filter withdrawals made in a date `12-09-2024`
+- `/user/:_id`: get withdrawals by single user by _id `Paginated<Withdrawal>`
 
 
 
@@ -44,6 +94,16 @@ prefix with `/public`
 - `/`: get all skirms that are open for guest. `Paginated<SkirmDetailed>`
 - - match: filter skirms by match _id
 - - league: filter skirms by league _id
+
+### `/clubs`
+- `/`: get all clubs available for ongoing skirms. `Paginated<ClubDetailed>`
+
+### `/leagues`
+- `/`: get all leagues available for ongoing skirms. `Paginated<League>`
+
+### `/notions`
+- `/`: get all notions available for ongoing skirms. `Notion`
+
 
 ### `/auth`
 - `/login`: user login [email|username, password] `{User, token}`
@@ -74,11 +134,13 @@ prefix with `/user`
 - `/`: 
 - - POST: deposit to wallet. [amount, uid]. `Deposit`
 - - GET: get user deposit history. `Paginated<Deposit>`
+- - - date: filter deposits made in a date `12-09-2024`
 
 ### `/withdrawal`
 - `/`: 
-- - POST: create withdrawal request. [amount]. `Deposit`
-- - GET: get user deposit history. `Paginated<Deposit>`
+- - POST: create withdrawal request. [amount, bankName, bankAccountName, bankAccountNumber]. `Withdrawal`
+- - GET: get user withdrawal history. `Paginated<Withdrawal>`
+- - - date: filter withdrawals made in a date `12-09-2024`
 
 
 ### `/skirms`
