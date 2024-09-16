@@ -1,95 +1,116 @@
 import { MatchCompleted, MatchDetailed } from "../match";
 
-
+/**
+ * Represents a Notion object for parsing and evaluating betting notations.
+ */
 export class NotionObject {
     private raw: string;
 
+    /**
+     * Creates a new NotionObject.
+     * @param {string} code - The raw notation code.
+     */
     constructor(code: string) {
         this.raw = code;
     }
 
+    /**
+     * Checks if the notation is valid.
+     * @returns {boolean} True if the notation is valid, false otherwise.
+     */
     public isValid(): boolean {
-        // Regular expression to match a valid Notion code format
-        const regex = /^([HA])_([>>=<<=!=E!E]=?\d*|E|!E|OT|P|GLT|BTS|CS_\d+_\d+)_([HA])$/;
-
-        // Check if the code matches the regular expression
+        const regex = /^(?:([HA])_((?:>|>=?|<|<=?|=|!=|E|!E)\d*|OT|P|GLT|BTS|CS_\d+_\d+)_([HA])|AB)$/;
         return regex.test(this.raw);
     }
 
+    /**
+     * Evaluates a conditional notation against a completed match.
+     * @param {string} condition - The condition to evaluate.
+     * @param {MatchCompleted} match - The completed match data.
+     * @returns {boolean} The result of the condition evaluation.
+     */
     private evaluateConditionally(condition: string, match: MatchCompleted): boolean {
-        const _ = condition;
-        if (_.startsWith('CS')) {
-            const [homeScore, awayScore] = condition.substring(3).split("_");
-            return match.homeScore === parseInt(homeScore) && match.awayScore === parseInt(awayScore);
-        }
-        else if (_.startsWith(">=")) {
-            return match.homeScore >= parseInt(condition.substring(2));
-        }
-        else if (_.startsWith(">") ) {
-            if(_ === '>') return match.homeScore > match.awayScore;
-            return match.homeScore > parseInt(condition.substring(1))
-        }
-        else if (_.startsWith("<=")) {
-            return match.homeScore <= parseInt(condition.substring(2));
-        }
-        else if (_.startsWith("<") ) {
-            if(_ === '<') return match.homeScore < match.awayScore;
-            return match.homeScore < parseInt(condition.substring(1))
-        }
-        else if (_.startsWith("=") && _.length === 1) {
-            return match.homeScore === match.awayScore;
-        }
-        else if (_.startsWith("=") && _.length > 1) {
-            return match.homeScore === parseInt(condition.substring(1)) && match.awayScore === parseInt(condition.substring(1));
-        }
-        else if (_.startsWith("!=")) {
-            return match.homeScore !== match.awayScore;
-        }
-        else if (_.startsWith("E")) {
-            return match.homeScore + match.awayScore === parseInt(condition.substring(1));
-        }
-        else if (_.startsWith("!E")) {
-            return match.homeScore + match.awayScore !== parseInt(condition.substring(2));
-        }
+        const [homeScore, awayScore] = [match.homeScore, match.awayScore];
+        const totalScore = homeScore + awayScore;
 
-        return false;
+        switch (true) {
+            case condition.startsWith('CS'):
+                const [expectedHome, expectedAway] = condition.substring(3).split("_").map(Number);
+                return homeScore === expectedHome && awayScore === expectedAway;
+            case condition.startsWith(">="):
+                return homeScore >= parseInt(condition.substring(2));
+            case condition.startsWith(">"):
+                return condition === '>' ? homeScore > awayScore : homeScore > parseInt(condition.substring(1));
+            case condition.startsWith("<="):
+                return homeScore <= parseInt(condition.substring(2));
+            case condition.startsWith("<"):
+                return condition === '<' ? homeScore < awayScore : homeScore < parseInt(condition.substring(1));
+            case condition === "=":
+                return homeScore === awayScore;
+            case condition.startsWith("="):
+                const expectedScore = parseInt(condition.substring(1));
+                return homeScore === expectedScore && awayScore === expectedScore;
+            case condition.startsWith("!="):
+                return homeScore !== awayScore;
+            case condition.startsWith("E"):
+                return totalScore === parseInt(condition.substring(1));
+            case condition.startsWith("!E"):
+                return totalScore !== parseInt(condition.substring(2));
+            default:
+                return false;
+        }
     }
 
+    /**
+     * Checks if a match is complete with all required data.
+     * @param {MatchDetailed} match - The match to check.
+     * @returns {boolean} True if the match is complete, false otherwise.
+     */
     private isMatchComplete(match: MatchDetailed): boolean {
-        return (match.isCompleted &&
+        return (
+            match.isCompleted &&
             match.homeScore !== undefined &&
             match.awayScore !== undefined &&
             match.isOverTime !== undefined &&
-            match.isDraw !== undefined)
+            match.isDraw !== undefined
+        );
     }
 
+    /**
+     * Extracts the condition from the raw notation.
+     * @returns {string} The extracted condition.
+     * @throws {Error} If the notation is invalid.
+     */
     private conditionFromRaw(): string {
-        if (this.raw.split("_").length === 3) return this.raw.split('_')[1]
-        else if (this.raw.split("_").length === 5) return this.raw.split('_').slice(1, 3).join('');
-        else throw new Error('Ivnalid Notion');
+        const parts = this.raw.split('_');
+        if (parts.length === 3) return parts[1];
+        if (parts.length === 5) return parts.slice(1, 4).join('_');
+        throw new Error('Invalid Notion');
     }
 
+    /**
+     * Evaluates a match against the notion.
+     * @param {MatchDetailed} match - The match to evaluate.
+     * @returns {boolean} The result of the evaluation.
+     */
     public evaluateMatch(match: MatchDetailed): boolean {
-        // Check if the match is completed
         if (!this.isMatchComplete(match)) return false;
-        const m = match as unknown as MatchCompleted;
+        const completedMatch = match as unknown as MatchCompleted;
 
         const condition = this.conditionFromRaw();
 
-        // Evaluate the match based on the Notion code
         switch (condition) {
-
             case "OT":
-                return m.isOverTime;
+                return completedMatch.isOverTime;
             case "P":
-                return m.isOverTime && m.isDraw; // Assuming draw after OT implies penalties
+                return completedMatch.isOverTime && completedMatch.isDraw;
             case "GLT":
-                // Implement logic to check if goal-line technology was used
-                return false; // Placeholder
+                // TODO: Implement logic to check if goal-line technology was used
+                return false;
             case "BTS":
-                return m.homeScore > 0 && m.awayScore > 0;
+                return completedMatch.homeScore > 0 && completedMatch.awayScore > 0;
             default:
-                return this.evaluateConditionally(condition, m as unknown as MatchCompleted);
+                return this.evaluateConditionally(condition, completedMatch);
         }
     }
 }
