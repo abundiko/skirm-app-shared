@@ -14,7 +14,7 @@ export const dummyLeagues: League[] = [
         title: "Premier League",
         startDate: "2023-08-11",
         endDate: "2024-05-19",
-        logo: "https://example.com/premier_league_logo.png"
+        logo: "https://1000logos.net/wp-content/uploads/2017/05/Premier-League-logo.png"
     },
     {
         _id: "league002",
@@ -22,7 +22,7 @@ export const dummyLeagues: League[] = [
         title: "La Liga",
         startDate: "2023-08-13",
         endDate: "2024-05-26",
-        logo: "https://example.com/la_liga_logo.png"
+        logo: "https://1000logos.net/wp-content/uploads/2019/01/Spanish-La-Liga-Logo.png"
     },
     {
         _id: "league003",
@@ -30,7 +30,7 @@ export const dummyLeagues: League[] = [
         title: "Bundesliga",
         startDate: "2023-08-18",
         endDate: "2024-05-18",
-        logo: "https://example.com/bundesliga_logo.png"
+        logo: "https://1000logos.net/wp-content/uploads/2020/09/Bundesliga-Logo.png"
     },
     {
         _id: "league004",
@@ -38,7 +38,7 @@ export const dummyLeagues: League[] = [
         title: "Serie A",
         startDate: "2023-08-19",
         endDate: "2024-05-26",
-        logo: "https://example.com/serie_a_logo.png"
+        logo: "https://1000logos.net/wp-content/uploads/2017/05/Premier-League-logo.png"
     },
     {
         _id: "league005",
@@ -46,6 +46,6 @@ export const dummyLeagues: League[] = [
         title: "Ligue 1",
         startDate: "2023-08-12",
         endDate: "2024-05-18",
-        logo: "https://example.com/ligue_1_logo.png"
+        logo: "https://1000logos.net/wp-content/uploads/2017/05/Premier-League-logo.png"
     }
 ];
