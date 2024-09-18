@@ -9,6 +9,7 @@ export type Match = {
     startDateTime: string;
     endDateTime: string;
     league: string;
+    notions: string[];
     isCompleted: boolean; // true when the match is completed and played
     // optional: only available after match was over
     homeScore?: number;
@@ -40,6 +41,7 @@ export const dummyMatches: Match[] = [
         startDateTime: "2023-06-15T19:00:00Z",
         endDateTime: "2023-06-15T21:00:00Z",
         league: "league001",
+        notions: [],
         isCompleted: false
     },
     {
@@ -50,6 +52,7 @@ export const dummyMatches: Match[] = [
         startDateTime: "2023-06-16T20:00:00Z",
         endDateTime: "2023-06-16T22:00:00Z",
         league: "league002",
+        notions: [],
         isCompleted: true,
         homeScore: 2,
         awayScore: 1,
@@ -64,6 +67,7 @@ export const dummyMatches: Match[] = [
         startDateTime: "2023-06-17T18:30:00Z",
         endDateTime: "2023-06-17T20:30:00Z",
         league: "league003",
+        notions: [],
         isCompleted: false
     },
     {
@@ -74,6 +78,7 @@ export const dummyMatches: Match[] = [
         startDateTime: "2023-06-18T15:00:00Z",
         endDateTime: "2023-06-18T17:00:00Z",
         league: "league001",
+        notions: [],
         isCompleted: true,
         homeScore: 1,
         awayScore: 1,

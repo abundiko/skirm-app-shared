@@ -63,7 +63,7 @@ export const dummyClubs: Club[] = [
     _id: "club005",
     createdAt: "2023-01-05T00:00:00Z",
    "name": "Juventus",
-    "logo": "https://1000logos.net/wp-content/uploads/2021/05/Juventus-logo.png",
+    "logo": "https://ih1.redbubble.net/image.5418214372.2401/st,small,507x507-pad,600x600,f8f8f8.jpg",
     "country": "Italy",
 
     "state": "Turin",
