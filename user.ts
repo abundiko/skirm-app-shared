@@ -22,6 +22,7 @@ export type User = UserMini & {
     lastName: string;
     phone: string;
     image: string;
+    isDisabled?: boolean;
 }
 
 export const dummyUsers: User[] = [
@@ -45,7 +46,7 @@ export const dummyUsers: User[] = [
         firstName: "Jane",
         lastName: "Smith",
         phone: "+1987654321",
-        image: "https://example.com/jane_smith.jpg"
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
     },
     {
         _id: "user003",
@@ -56,7 +57,7 @@ export const dummyUsers: User[] = [
         firstName: "Mike",
         lastName: "Johnson",
         phone: "+1122334455",
-        image: "https://example.com/mike_johnson.jpg"
+        image: ""
     },
     {
         _id: "user004",
@@ -68,5 +69,6 @@ export const dummyUsers: User[] = [
         lastName: "Brown",
         phone: "+1555666777",
         image: "https://example.com/emily_brown.jpg"
+    
     }
 ];
