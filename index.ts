@@ -1,9 +1,9 @@
-export { User, UserMini, UserWithWallet, Wallet } from './user';
-export { Admin, AdminAuthResponse } from './admin';
-export { Deposit, DepositDetailed } from './deposit';
-export { Withdrawal, WithdrawalDetailed } from './withdrawal';
-export { Match, MatchDetailed } from './match';
-export { Skirm, SkirmDetailed } from './skirm';
-export { Club } from './club';
-export { League } from './league';
-export { Notion } from './notion';
+export { type User, type UserMini, type UserWithWallet, type Wallet } from './user';
+export { type Admin, type AdminAuthResponse } from './admin';
+export { type Deposit, type DepositDetailed } from './deposit';
+export { type Withdrawal, type WithdrawalDetailed } from './withdrawal';
+export { type Match, type MatchDetailed } from './match';
+export { type Skirm, type SkirmDetailed } from './skirm';
+export { type Club } from './club';
+export { type League } from './league';
+export { type Notion } from './notion';
