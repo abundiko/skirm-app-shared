@@ -15,6 +15,10 @@ export type ClubDetailed = Omit<Club, 'homeLeague'> & {
   homeLeague: League;
 }
 
+export type ClubDetailedWithIsHome = ClubDetailed & {
+  isHome: boolean;
+}
+
 export const dummyClubs: Club[] = [
   {
     _id: "club001",
@@ -51,7 +55,7 @@ export const dummyClubs: Club[] = [
   {
     _id: "club004",
     createdAt: "2023-01-04T00:00:00Z",
-  "name": "Real Madrid",
+    "name": "Real Madrid",
     "logo": "https://1000logos.net/wp-content/uploads/2020/09/Real-Madrid-logo.png",
     "country": "Spain",
 
@@ -62,7 +66,7 @@ export const dummyClubs: Club[] = [
   {
     _id: "club005",
     createdAt: "2023-01-05T00:00:00Z",
-   "name": "Juventus",
+    "name": "Juventus",
     "logo": "https://ih1.redbubble.net/image.5418214372.2401/st,small,507x507-pad,600x600,f8f8f8.jpg",
     "country": "Italy",
 

@@ -1,5 +1,6 @@
 import { Club, dummyClubs } from "./club"
 import { League, dummyLeagues } from "./league";
+import { dummmyNotionStrings } from "./notion";
 
 export type Match = {
     _id: string;
@@ -41,7 +42,7 @@ export const dummyMatches: Match[] = [
         startDateTime: "2023-06-15T19:00:00Z",
         endDateTime: "2023-06-15T21:00:00Z",
         league: "league001",
-        notions: [],
+        notions: dummmyNotionStrings,
         isCompleted: false
     },
     {

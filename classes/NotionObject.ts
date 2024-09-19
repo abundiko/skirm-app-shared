@@ -14,6 +14,10 @@ export class NotionObject {
         this.raw = code;
     }
 
+    public code() {
+        return this.raw;
+    }
+
     /**
      * Checks if the notation is valid.
      * @returns {boolean} True if the notation is valid, false otherwise.
@@ -23,43 +27,6 @@ export class NotionObject {
         return regex.test(this.raw);
     }
 
-    /**
-     * Evaluates a conditional notation against a completed match.
-     * @param {string} condition - The condition to evaluate.
-     * @param {MatchCompleted} match - The completed match data.
-     * @returns {boolean} The result of the condition evaluation.
-     */
-    private evaluateConditionally(condition: string, match: MatchCompleted): boolean {
-        const [homeScore, awayScore] = [match.homeScore, match.awayScore];
-        const totalScore = homeScore + awayScore;
-
-        switch (true) {
-            case condition.startsWith('CS'):
-                const [expectedHome, expectedAway] = condition.substring(3).split("_").map(Number);
-                return homeScore === expectedHome && awayScore === expectedAway;
-            case condition.startsWith(">="):
-                return homeScore >= parseInt(condition.substring(2));
-            case condition.startsWith(">"):
-                return condition === '>' ? homeScore > awayScore : homeScore > parseInt(condition.substring(1));
-            case condition.startsWith("<="):
-                return homeScore <= parseInt(condition.substring(2));
-            case condition.startsWith("<"):
-                return condition === '<' ? homeScore < awayScore : homeScore < parseInt(condition.substring(1));
-            case condition === "=":
-                return homeScore === awayScore;
-            case condition.startsWith("="):
-                const expectedScore = parseInt(condition.substring(1));
-                return homeScore === expectedScore && awayScore === expectedScore;
-            case condition.startsWith("!="):
-                return homeScore !== awayScore;
-            case condition.startsWith("E"):
-                return totalScore === parseInt(condition.substring(1));
-            case condition.startsWith("!E"):
-                return totalScore !== parseInt(condition.substring(2));
-            default:
-                return false;
-        }
-    }
 
     /**
      * Checks if a match is complete with all required data.
@@ -112,5 +79,98 @@ export class NotionObject {
             default:
                 return this.evaluateConditionally(condition, completedMatch);
         }
+    }
+
+    /**
+ * Evaluates a conditional notation against a completed match.
+ * @param {string} condition - The condition to evaluate.
+ * @param {MatchCompleted} match - The completed match data.
+ * @returns {boolean} The result of the condition evaluation.
+ */
+    private evaluateConditionally(condition: string, match: MatchCompleted): boolean {
+        const [homeScore, awayScore] = [match.homeScore, match.awayScore];
+        const totalScore = homeScore + awayScore;
+
+        switch (true) {
+            case condition.startsWith('CS'):
+                const [expectedHome, expectedAway] = condition.substring(3).split("_").map(Number);
+                return homeScore === expectedHome && awayScore === expectedAway;
+            case condition.startsWith(">="):
+                return homeScore >= parseInt(condition.substring(2));
+            case condition.startsWith(">"):
+                return condition === '>' ? homeScore > awayScore : homeScore > parseInt(condition.substring(1));
+            case condition.startsWith("<="):
+                return homeScore <= parseInt(condition.substring(2));
+            case condition.startsWith("<"):
+                return condition === '<' ? homeScore < awayScore : homeScore < parseInt(condition.substring(1));
+            case condition === "=":
+                return homeScore === awayScore;
+            case condition.startsWith("="):
+                const expectedScore = parseInt(condition.substring(1));
+                return homeScore === expectedScore && awayScore === expectedScore;
+            case condition.startsWith("!="):
+                return homeScore !== awayScore;
+            case condition.startsWith("E"):
+                return totalScore === parseInt(condition.substring(1));
+            case condition.startsWith("!E"):
+                return totalScore !== parseInt(condition.substring(2));
+            default:
+                return false;
+        }
+    }
+
+
+    public toReadable(): string {
+        if (!this.isValid()) return '';
+
+        const c = this.conditionFromRaw();
+        if (c == "OT") return "Overtime"
+        else if (c == "BTS") return "Both teams Score"
+        else if (c == "P") return "Penalties"
+        else if (c == "CS") return "Correct Score"
+        else if (c.startsWith("CS") && c.length > 4) {
+            const [expectedHome, expectedAway] = c.substring(3).split("_").map(Number);
+            return `Correct Score: ${expectedHome} - ${expectedAway}`
+        }
+        else if (c.startsWith(">=")) return `Win with ${c.substring(2)}+ goals`
+        else if (c.startsWith(">") && c.length > 1) return `Win with ${c.substring(1)} goals`
+        else if (c.startsWith(">") && c.length === 1) return `Win`
+        else if (c.startsWith("<=")) return `Lose with ${c.substring(1)}+ goals`
+        else if (c.startsWith("<") && c.length > 1) return `Lose with ${c.substring(2)} goals`
+        else if (c.startsWith("<") && c.length === 1) return `Lose`
+        else if (c == "=") return "Draw"
+        else if (c == "!=") return "NOT Draw"
+        else if (c.startsWith("=")) return `Draw with ${c.substring(1)} goals`
+        else if (c.startsWith("E")) return `Game Ends with ${c.substring(1)} goals`
+        else if (c.startsWith("!E")) return `NOT End with ${c.substring(2)} goals`
+        return ''
+    }
+
+    public toReadableWithTeams(home: string, away: string, supports: string): string {
+        if (!this.isValid()) return '';
+        const supportsHome = home == supports;
+        const other = supportsHome ? away : home;
+
+        const c = this.conditionFromRaw();
+        if (c == "OT") return "Match ends Overtime"
+        else if (c == "BTS") return `Both ${home} and ${away} score`
+        else if (c == "P") return "Match ends with Penalties"
+        else if (c == "CS") return "Correct Score"
+        else if (c.startsWith("CS") && c.length > 4) {
+            const [expectedHome, expectedAway] = c.substring(3).split("_").map(Number);
+            return `Correct Score: ${home} (${expectedHome} - ${expectedAway}) ${away}`;
+        }
+        else if (c.startsWith(">=")) return `${supports} Win ${other} with ${c.substring(2)}+ goal(s)`
+        else if (c.startsWith(">") && c.length > 1) return `${supports} Win ${other} with ${c.substring(1)} goal(s)`
+        else if (c.startsWith(">") && c.length === 1) return `${supports} Win ${other}`
+        else if (c.startsWith("<=")) return `${supports} lose to ${other} and concieve ${c.substring(1)}+ goal(s)`
+        else if (c.startsWith("<") && c.length > 1) return `${supports} lose to ${other} and concieve ${c.substring(2)} goal(s)`
+        else if (c.startsWith("<") && c.length === 1) return `${supports} lose to ${other}`
+        else if (c == "=") return `${supports} draw with ${other}`
+        else if (c == "!=") return `${supports} NOT draw with ${other}. one team must win`
+        else if (c.startsWith("=")) return `${supports} draw with ${other}, ${c.substring(1)} goal(s) scored by each team`
+        else if (c.startsWith("E")) return `Game Ends with ${c.substring(1)} goal(s)`
+        else if (c.startsWith("!E")) return `NOT End with ${c.substring(2)} goal(s)`
+        return ''
     }
 }
