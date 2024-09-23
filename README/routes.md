@@ -6,6 +6,7 @@
 - public routes do not need any token and are open to everyone
 - general route prefix: `/api`
 - endpoints will be represent in such manner 
+- endpoints returning Paginated<any> can always take query params: page(the page number), perPage(how many items to return on each page-default is 20)
 [endpoint, description, [FormData(if necessary)], `response(successful)`]
 
 ## Admin Routes (only admin can access)
