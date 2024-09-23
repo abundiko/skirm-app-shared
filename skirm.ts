@@ -1,4 +1,4 @@
-import { Match, MatchDetailed, dummyMatches, dummyMatchesDetailed } from "./match";
+import { MatchDetailed, dummyMatchesDetailed } from "./match";
 import { Notion, dummyNotions } from "./notion";
 import { User, dummyUsers } from "./user";
 
@@ -18,7 +18,7 @@ export type Skirm = {
 export type SkirmDetailed = Omit<Skirm,
     'owner' | 'guest' | 'match' | 'ownerNotion' | 'guestNotion' | 'winner'> & {
         owner: User;
-        guest: User;
+        guest: null | User;
         match: MatchDetailed;
         ownerNotion: Notion;
         guestNotion: Notion;
@@ -44,7 +44,7 @@ export const dummySkirms: Skirm[] = [
         completedAt: "2023-01-04T00:00:00Z",
         stake: 200,
         owner: "user3",
-        guest: "user4",
+        guest: "",
         match: "match2",
         ownerNotion: "notion3",
         guestNotion: "notion4",
@@ -93,9 +93,9 @@ export const dummySkirmsDetailes: SkirmDetailed[] = dummySkirms.map((skirm, i) =
     return {
         ...others,
         owner: dummyUsers[i] ?? dummyUsers[0],
-        guest: dummyUsers[i + 1] ?? dummyUsers[0],
+        guest: i == 1 ? null : dummyUsers[i + 1] ?? dummyUsers[0],
         match: dummyMatchesDetailed[i] ?? dummyMatchesDetailed[0],
-        ownerNotion: dummyNotions[i] ?? dummyNotions[0],
+        ownerNotion:  dummyNotions[i] ?? dummyNotions[0],
         guestNotion: dummyNotions[i + 1] ?? dummyNotions[0],
 
     } as SkirmDetailed;

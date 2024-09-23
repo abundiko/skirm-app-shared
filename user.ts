@@ -35,7 +35,7 @@ export const dummyUsers: User[] = [
         firstName: "John",
         lastName: "Doe",
         phone: "+1234567890",
-        image: "https://example.com/john_doe.jpg"
+        image: ""
     },
     {
         _id: "user002",
@@ -68,7 +68,7 @@ export const dummyUsers: User[] = [
         firstName: "Emily",
         lastName: "Brown",
         phone: "+1555666777",
-        image: "https://example.com/emily_brown.jpg"
+        image: ""
     
     }
 ];

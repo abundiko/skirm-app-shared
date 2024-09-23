@@ -7,3 +7,4 @@ export { type Skirm, type SkirmDetailed } from './skirm';
 export { type Club, type ClubDetailedWithIsHome, type ClubDetailed } from './club';
 export { type League } from './league';
 export { type Notion } from './notion';
+export { type UserNotification, type UserNotificationDetailed, type UserNotificationCategory } from './userNotification';
