@@ -174,9 +174,58 @@ export class NotionObject {
         return ''
     }
 
-    static generatePrimitiveCodes(): string[]{
-        
-        return []
+    static generatePrimitiveCodes(): string[] {
+        const list: string[] = ["BTS", "OT", "P"].map(this.withHA);
+        return list;
+    }
+
+    private static withHA(condition: string): string {
+        return `H_${condition}_A`
+    }
+
+    private static generateWinCodes(count: number): string[] {
+        const codes: string[] = [];
+
+        for (let i = 0; i <= count; i++) {
+            if (i == 0) {
+                codes.push(this.withHA(">"))
+            } else {
+                codes.push(this.withHA(`>${i}`))
+                codes.push(this.withHA(`>=${i}`))
+            }
+        }
+        return codes;
+    }
+    private static generateDrawCodes(count: number): string[] {
+        const codes: string[] = [];
+
+        codes.push(this.withHA("!="))
+        for (let i = 0; i <= count; i++) {
+            codes.push(this.withHA(`=${i == 0 ? '' : i}`))
+        }
+
+        return codes;
+    }
+    private static generateEndCodes(count: number): string[] {
+        const codes: string[] = [];
+
+        for (let i = 1; i <= count; i++) {
+            codes.push(this.withHA(`E${i}`))
+            codes.push(this.withHA(`!E${i}`))
+        }
+
+        return codes;
+    }
+    private static generateCorrectScoreCodes(count: number): string[] {
+        const codes: string[] = [];
+
+        for (let i = 0; i <= count; i++) {
+            for (let j = 0; j <= count; j++) {
+                codes.push(this.withHA(`CS_${i}_${j}`))
+            }
+        }
+
+        return codes;
     }
 
     /**
@@ -192,9 +241,17 @@ export class NotionObject {
      * @returns string[] an array of strings (raw notion codes)
      */
     static generateCodesFromGoalCount(goals: number): string[] {
-        return []
+        return [
+            ...this.generatePrimitiveCodes(),
+            ...this.generateWinCodes(goals),
+            ...this.generateDrawCodes(goals),
+            ...this.generateEndCodes(goals),
+            ...this.generateCorrectScoreCodes(goals),
+        ]
     }
 }
 
-const nots = NotionObject.generateCodesFromGoalCount(10)
-console.log(nots);
+const nots = NotionObject.generateCodesFromGoalCount(1)
+console.log(nots.map(i => {
+    return new NotionObject(i).toReadable()
+}));
