@@ -173,4 +173,28 @@ export class NotionObject {
         else if (c.startsWith("!E")) return `NOT End with ${c.substring(2)} goal(s)`
         return ''
     }
+
+    static generatePrimitiveCodes(): string[]{
+        
+        return []
+    }
+
+    /**
+     * generate a list of notion codes
+     * 
+     * @example
+     * ```
+     * NotionObject.generateCodesFromGoalCount(1);
+     * // ["H_>=1_A", "H_<=1_A", "H_>1_A", "H_<1_A", ...]
+     * ```
+     * 
+     * @param goals number of goals to generate notions for
+     * @returns string[] an array of strings (raw notion codes)
+     */
+    static generateCodesFromGoalCount(goals: number): string[] {
+        return []
+    }
 }
+
+const nots = NotionObject.generateCodesFromGoalCount(10)
+console.log(nots);
