@@ -132,17 +132,17 @@ export class NotionObject {
             const [expectedHome, expectedAway] = c.substring(3).split("_").map(Number);
             return `Correct Score: ${expectedHome} - ${expectedAway}`
         }
-        else if (c.startsWith(">=")) return `Win with ${c.substring(2)}+ goals`
-        else if (c.startsWith(">") && c.length > 1) return `Win with ${c.substring(1)} goals`
+        else if (c.startsWith(">=")) return `Win with ${c.substring(2)}+ goal(s)`
+        else if (c.startsWith(">") && c.length > 1) return `Win with ${c.substring(1)} goal(s)`
         else if (c.startsWith(">") && c.length === 1) return `Win`
-        else if (c.startsWith("<=")) return `Lose with ${c.substring(1)}+ goals`
-        else if (c.startsWith("<") && c.length > 1) return `Lose with ${c.substring(2)} goals`
+        else if (c.startsWith("<=")) return `Lose with ${c.substring(1)}+ goal(s)`
+        else if (c.startsWith("<") && c.length > 1) return `Lose with ${c.substring(2)} goal(s)`
         else if (c.startsWith("<") && c.length === 1) return `Lose`
         else if (c == "=") return "Draw"
         else if (c == "!=") return "NOT Draw"
-        else if (c.startsWith("=")) return `Draw with ${c.substring(1)} goals`
-        else if (c.startsWith("E")) return `Game Ends with ${c.substring(1)} goals`
-        else if (c.startsWith("!E")) return `NOT End with ${c.substring(2)} goals`
+        else if (c.startsWith("=")) return `Draw with ${c.substring(1)} goal(s)`
+        else if (c.startsWith("E")) return `Game Ends with ${c.substring(1)} goal(s)`
+        else if (c.startsWith("!E")) return `NOT End with ${c.substring(2)} goal(s)`
         return ''
     }
 
@@ -251,7 +251,7 @@ export class NotionObject {
     }
 }
 
-const nots = NotionObject.generateCodesFromGoalCount(1)
+const nots = NotionObject.generateCodesFromGoalCount(2)
 console.log(nots.map(i => {
     return new NotionObject(i).toReadable()
 }));
