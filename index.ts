@@ -1,7 +1,7 @@
 export { type User, type UserMini, type UserWithWallet, type Wallet } from './user';
 export { type Admin, type AdminAuthResponse } from './admin';
 export { type Deposit, type DepositDetailed } from './deposit';
-export { type Withdrawal, type WithdrawalDetailed } from './withdrawal';
+export { type Withdrawal, type WithdrawalDetailed, type WithdrawalStatus } from './withdrawal';
 export { type Match, type MatchDetailed } from './match';
 export { type Skirm, type SkirmDetailed } from './skirm';
 export { type Club, type ClubDetailedWithIsHome, type ClubDetailed } from './club';

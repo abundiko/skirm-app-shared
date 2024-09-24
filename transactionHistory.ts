@@ -1,10 +1,11 @@
-export type TransactionHistoryType = 'credit' | 'withdrawal' | 'stake'
+export type TransactionHistoryType = 'deposit' | 'withdrawal' | 'stake' | 'failed-deposit'
 
 export type TransactionHistory = {
     _id: string;
     createdAt: string;
     type: TransactionHistoryType,
     amount: number;
+    uid?: string; // available for deposit or failed-deposit Types
 }
 
 export const TRANSACTION_HISTORY_OPTIONS: {
@@ -13,7 +14,7 @@ export const TRANSACTION_HISTORY_OPTIONS: {
 }[] = [
         { title: "All", value: "" },
         { title: "Withdrawal", value: "withdrawal" },
-        { title: "Credit", value: "credit" },
+        { title: "Credit", value: "deposit" },
         { title: "Stake", value: "stake" },
     ]
 
@@ -21,7 +22,7 @@ export const dummyTransactions: TransactionHistory[] = [
     {
         _id: '1',
         createdAt: '2023-06-01T10:30:00Z',
-        type: 'credit',
+        type: 'deposit',
         amount: 5000
     },
     {
@@ -39,7 +40,7 @@ export const dummyTransactions: TransactionHistory[] = [
     {
         _id: '4',
         createdAt: '2023-06-04T16:20:00Z',
-        type: 'credit',
+        type: 'deposit',
         amount: 3000
     },
     {
