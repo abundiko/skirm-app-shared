@@ -240,7 +240,8 @@ export class NotionObject {
      * @param goals number of goals to generate notions for
      * @returns string[] an array of strings (raw notion codes)
      */
-    static generateCodesFromGoalCount(goals: number): string[] {
+    static generateCodesFromGoalCount(goals: number, maxGoals = 15): string[] {
+        if (goals > 15) goals = maxGoals;
         return [
             ...this.generatePrimitiveCodes(),
             ...this.generateWinCodes(goals),
@@ -251,7 +252,7 @@ export class NotionObject {
     }
 }
 
-const nots = NotionObject.generateCodesFromGoalCount(2)
-console.log(nots.map(i => {
-    return new NotionObject(i).toReadable()
-}));
+// const nots = NotionObject.generateCodesFromGoalCount(2)
+// console.log(nots.map(i => {
+//     return new NotionObject(i).toReadable()
+// }));

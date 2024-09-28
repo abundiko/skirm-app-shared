@@ -6,9 +6,9 @@ export type Notion = {
     code: string;
 }
 
-export const dummmyNotionStrings = ["H_>_A", "H_=_A", "H_>2_A", "H_CS_3_2_A"];
+export const dummmyNotionStrings = NotionObject.generateCodesFromGoalCount(3);
 
-export const dummyNotions:Notion[] = dummmyNotionStrings.map(notion=>{
+export const dummyNotions: Notion[] = dummmyNotionStrings.map(notion => {
     const n = new NotionObject(notion);
     return {
         title: n.toReadable(),

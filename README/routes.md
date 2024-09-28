@@ -36,7 +36,7 @@ perfix with `/admin`
 
 ### `/clubs`
 - `/`:
-- - POST: create a club [name, logo, country, state, primaryColor, homeLeague]. `ClubDetailed`
+- - POST: create a club [name, shortName, logo, country, state, primaryColor, homeLeague]. `ClubDetailed`
 - - PATCH: edit a club. [...same formdata for POST ^] `ClubDetailed`
 - - DELETE: delete a club. [clubId] `ClubDetailed`
 - - GET: get all clubs. `Paginated<ClubDetailed>`
